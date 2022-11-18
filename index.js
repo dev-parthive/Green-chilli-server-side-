@@ -40,17 +40,41 @@ const serviceCollection = client.db("Green_chilli").collection("services")
 
 
 // read /get services from DB 
+//  only 3 service load  api 
 app.get('/service', async(req, res)=>{
     try{
         const cursor = serviceCollection.find({})
         const services =  await cursor.limit(3).toArray()
-        res.send(services)
+        res.send({
+            success: true, 
+            message: " got 3 product form DB " , 
+            data : services
+        })
     }
     catch(err){
         console.log(err.name.bgRed, err.message.bold)
         res.send({
             success: false , 
             error: "Coldn't get service from db "
+        })
+    }
+}) 
+
+// all services load api 
+app.get('/services', async(req, res)=>{
+    try{
+        const cursor = serviceCollection.find({})
+        const services  = await cursor.toArray()
+        res.send({
+            success :true, 
+            message: "load every services  form DB " ,
+            data: services 
+        })
+    }
+    catch(err){
+        res.send({
+            success: false,
+            error : "couldn't load the data "
         })
     }
 })
