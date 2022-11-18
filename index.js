@@ -77,7 +77,28 @@ app.get('/services', async(req, res)=>{
             error : "couldn't load the data "
         })
     }
+}) 
+
+//to get the specific service 
+app.get('/product/:id',  async(req, res)=>{
+    try{
+        const id = req.params.id
+        const service = await serviceCollection.findOne({_id: Object(id)})
+        res.send({
+            success: true, 
+            data: service
+        })
+
+    }
+    catch(err){
+        res.send({
+            success: false, 
+            error: err.message
+        })
+    }
 })
+
+
 
 app.get('/', (req, res)=>{
     res.send("Server is running ...")
