@@ -1,7 +1,8 @@
 const express = require("express")
 const app = express();
 const cors = require("cors")
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion , ObjectId} = require('mongodb');
+// const { ObjectId } = require("mongodb/mongodb");
 
 require("colors")
 
@@ -83,10 +84,12 @@ app.get('/services', async(req, res)=>{
 app.get('/product/:id',  async(req, res)=>{
     try{
         const id = req.params.id
-        const service = await serviceCollection.findOne({_id: Object(id)})
+        // console.log(id)
+       const service = await serviceCollection.findOne({_id: ObjectId(id)})
         res.send({
-            success: true, 
-            data: service
+            success: true,
+            message: 'got the product', 
+            data: service 
         })
 
     }
