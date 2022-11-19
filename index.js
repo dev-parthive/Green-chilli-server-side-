@@ -216,7 +216,30 @@ app.patch("/edit-review/:id", async (req, res)=>{
     }
 })
 
+// akn time holo reveiew delete koara 
+app.delete(`/delete/:id`, async(req,res)=>{
+    const id = req.params.id
+    try{
+        const result = await reviewCollection.deleteOne({_id: ObjectId(id)})
+        if(result.deletedCount){
+            console.log("Successfully deleted".yellow)
+            res.send({
+                success: true, 
+                message: "review is deleted"
+            })
+        }
+        else{
+            console.log("something went wrong".red)
 
+        }
+    }
+    catch(err){
+        res.send({
+            success: false, 
+            error: err.message
+        })
+    }
+})
 
 app.get('/', (req, res)=>{
     res.send("Server is running ...")
