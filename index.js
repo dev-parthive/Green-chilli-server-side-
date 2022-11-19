@@ -171,6 +171,51 @@ app.get('/review/:email', async(req, res)=>{
     }
 })
 
+// get the specific review using id 
+app.get('/edit-review/:id', async(req, res)=>{
+    try{
+        const id = req.params.id
+        const review = await reviewCollection.findOne({_id: ObjectId(id)})
+        res.send({
+            success: true, 
+            data : review
+        })
+    }
+    catch(error){
+        res.send({
+            success: false,
+            error: error.message
+        })
+    }
+}) 
+
+//akn kaj holo edit kora remview db ta patano 
+
+app.patch("/edit-review/:id", async (req, res)=>{
+    const id = req.params.id
+    try{
+        const result = await reviewCollection.updateOne({_id: ObjectId(id)}, {$set: req.body})
+        if(result.modifiedCount){
+            res.send({
+                success: true, 
+                message: "successfully update"
+            })
+        }else{
+            res.send({
+                success: false,
+                error: "Couldn't update the review"
+            })
+        }
+    }
+    catch(err){
+        res.send({
+            success: false,
+            error: err.message
+        })
+
+    }
+})
+
 
 
 app.get('/', (req, res)=>{
