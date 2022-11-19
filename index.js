@@ -240,6 +240,35 @@ app.delete(`/delete/:id`, async(req,res)=>{
         })
     }
 })
+//create new service 
+
+
+app.post('/add-service', async(req, res) =>{
+
+    try{
+        const result = await serviceCollection.insertOne(req.body);
+        if(result.insertedId){
+            res.send({
+                success: true,
+                message: `successfully created teh ${req.body.name} product with id ${result.insertedId}`
+            })
+        }
+        else{
+            res.send({
+                success: false,
+                error: "Couldn't create the service"
+            })
+        }
+    }
+    catch(err){
+        console.log(err.name.bgRed, err.message.bold)
+        res.send({
+            success: false,
+            error: err.message
+        })
+    }
+})
+
 
 app.get('/', (req, res)=>{
     res.send("Server is running ...")
