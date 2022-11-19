@@ -149,6 +149,26 @@ app.get('/addReview/:id', async(req, res) =>{
             error: err.message
         })
     }
+}) 
+
+//akn kaj holo ak jon user er koita review ase ta dhekar
+app.get('/review/:email', async(req, res)=>{
+    try{
+        const email = req.params.email
+        const query = {email: (email)}
+        const cursor = reviewCollection.find(query)
+        const reviews =  await cursor.toArray()
+        res.send({
+            success: true ,
+            data: reviews
+        })
+    }
+    catch(err){
+        res.send({
+            success: false, 
+            error: err.message
+        })
+    }
 })
 
 
