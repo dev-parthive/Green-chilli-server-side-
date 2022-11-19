@@ -35,7 +35,11 @@ dbConnect()
 
 
 //mongoDB connections 
-const serviceCollection = client.db("Green_chilli").collection("services")
+
+//amra akane collection create korlam 
+const serviceCollection = client.db("Green_chilli").collection("services") 
+const reviewCollection = client.db("Green_chilli").collection("reviews")
+
 
 
 
@@ -89,7 +93,7 @@ app.get('/product/:id',  async(req, res)=>{
         res.send({
             success: true,
             message: 'got the product', 
-            data: service 
+            product: service 
         })
 
     }
@@ -97,6 +101,32 @@ app.get('/product/:id',  async(req, res)=>{
         res.send({
             success: false, 
             error: err.message
+        })
+    }
+})
+
+// add review api 
+app.post('/addReview', async(req, res) =>{
+    try{
+        const result = await reviewCollection.insertOne(req.body)
+        if(result.insertedId){
+            res.send({
+                success: true,
+                message: "Review added in DB"
+
+            })
+        }else{
+            res.send({
+                success: false,
+                error: "Couldn't add the review"
+            })
+        }
+    }
+    catch(err){
+        console.log(err.name.bgRed, err.message.bold)
+        res.send({
+            success: false,
+            error: err.message ,
         })
     }
 })
