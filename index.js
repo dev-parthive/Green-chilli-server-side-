@@ -1,7 +1,7 @@
 const express = require("express")
 const app = express();
 const cors = require("cors")
-const { MongoClient, ServerApiVersion , ObjectId} = require('mongodb');
+const { MongoClient, ServerApiVersion , ObjectId, ObjectID} = require('mongodb');
 // const { ObjectId } = require("mongodb/mongodb");
 
 require("colors")
@@ -127,6 +127,26 @@ app.post('/addReview', async(req, res) =>{
         res.send({
             success: false,
             error: err.message ,
+        })
+    }
+})
+
+// akan kaj holo  review ta k find kore niye asa product_id idye 
+app.get('/addReview/:id', async(req, res) =>{
+    try{
+        const id = req.params.id 
+        const query = {product_id:(id)}
+        const cursor =  reviewCollection.find(query)
+        const review = await cursor.toArray()
+        res.send({
+            success: true, 
+            data: review
+        })
+    }
+    catch(err){
+        res.send({
+            success: false,
+            error: err.message
         })
     }
 })
